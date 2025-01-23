@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional // readOnly=ture 제거
 public class TodoService {
 
     private final TodoRepository todoRepository;
