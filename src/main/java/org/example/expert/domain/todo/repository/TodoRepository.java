@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
@@ -18,4 +19,21 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "LEFT JOIN t.user " +
             "WHERE t.id = :todoId")
     Optional<Todo> findByIdWithUser(@Param("todoId") Long todoId);
+
+    // weather
+    @Query("SELECT t FROM Todo t LEFT JOIN t.user u WHERE t.weather = :weather ORDER BY t.modifiedAt DESC")
+    Page<Todo> findByWeather(@Param("weather") String weather, Pageable pageable);
+
+    //수정일 검색
+    @Query("SELECT t FROM Todo t LEFT JOIN t.user u WHERE t.modifiedAt BETWEEN :startDate AND :endDate ORDER BY t.modifiedAt DESC")
+    Page<Todo> findBYModifiedAtBetween(@Param("startDate")LocalDateTime startDate,
+                                       @Param("endDate") LocalDateTime endDate,
+                                       Pageable pageable);
+
+    // weather + 수정일
+    @Query("SELECT t FROM Todo t LEFT JOIN t.user u WHERE t.weather = :weather AND t.modifiedAt BETWEEN :startDate AND :endDate ORDER BY t.modifiedAt DESC")
+    Page<Todo> findByWeatherAndModifiedAtBetween(@Param("weather") String weather,
+                                                 @Param("startDate") LocalDateTime startDate,
+                                                 @Param("endDate") LocalDateTime endDate,
+                                                 Pageable pageable);
 }
