@@ -60,7 +60,6 @@ public class JwtUtil {
         return claims.get("nickName", String.class);
     }
 
-
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
